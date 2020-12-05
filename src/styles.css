@@ -1,5 +1,5 @@
 body {
-  background-color: blanchedalmond;
+  background-color: rgb(175, 180, 247);
 }
 
 /* template country-card */
@@ -31,10 +31,11 @@ body {
 }
 
 .card__information {
-  font-size: 25px;
+  font-size: 35px;
 }
 
 .card__image {
+  margin-top: 50px;
   max-width: 50%;
   height: 300px;
 }
