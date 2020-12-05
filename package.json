@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shkurkohalyna/goit-js-hw-11-timer.git"
+    "url": "git+https://github.com/shkurkohalyna/goit-js-hw-12-countries.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/shkurkohalyna/goit-js-hw-11-timer/issues"
+    "url": "https://github.com/shkurkohalyna/goit-js-hw-12-countries/issues"
   },
-  "homepage": "https://github.com/shkurkohalyna/goit-js-hw-11-timer#readme",
+  "homepage": "https://github.com/shkurkohalyna/goit-js-hw-12-countries#readme",
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.10.4",

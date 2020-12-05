@@ -1,35 +1,69 @@
 import './styles.css';
-import CountdownTimer from './js/constructor';
+import countryTemplate from './templates/country-card.hbs';
+import countryListTemplate from './templates/country-list.hbs';
+import API from './js/fetchCountries';
+import getRefs from './js/items';
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/core/dist/Material.css';
+import '@pnotify/core/dist/BrightTheme.css';
+import 'material-design-icons/iconfont/material-icons.css';
+import { defaults, alert } from '@pnotify/core';
+defaults.icons = 'material';
+defaults.styling = 'material';
+defaults.type = 'error';
+defaults.hide = true;
+defaults.width = '360px';
+defaults.minHeight = '16px';
+defaults.delay = '1500';
+defaults.closer = false;
+defaults.sticker = false;
+// defaults.addClass = 'error';
 
 
-const timer = new CountdownTimer({
-  selector: '#timer-1',
-  targetDate: new Date('Jan 01, 2021'),
- 
-});
+const debounce = require('lodash.debounce');
+const refs = getRefs();
 
-timer.start();
-/*
- * Оставшиеся дни: делим значение UTC на 1000 * 60 * 60 * 24, количество
- * миллисекунд в одном дне (миллисекунды * секунды * минуты * часы)
- */
-// const days = Math.floor(time / (1000 * 60 * 60 * 24));
+    
+refs.serchForm.addEventListener("input", debounce(onSerchCountry, 500));
 
-/*
- * Оставшиеся часы: получаем остаток от предыдущего расчета с помощью оператора
- * остатка % и делим его на количество миллисекунд в одном часе
- * (1000 * 60 * 60 = миллисекунды * минуты * секунды)
- */
-// const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+function onSerchCountry(evt) {
+    evt.preventDefault();
+    const inputValue = evt.target.value;
+    if (inputValue === '' || inputValue === ' ') {
+       return alert({
+            text: `Too many matches found. Please enter a more specific querty!`,
+        });
+     };  
 
-/*
- * Оставшиеся минуты: получаем оставшиеся минуты и делим их на количество
- * миллисекунд в одной минуте (1000 * 60 = миллисекунды * секунды)
- */
-// const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+  
+   API.fetchCountry(inputValue).then(renderCountryCard).catch(onFetchError);
+ };
 
-/*
- * Оставшиеся секунды: получаем оставшиеся секунды и делим их на количество
- * миллисекунд в одной секунде (1000)
- */
-// const secs = Math.floor((time % (1000 * 60)) / 1000);
+
+function renderCountryCard(country) {
+    
+    onFetchError(country);
+    
+    
+    
+    if (country.length > 1 && country.length < 10) {
+        const marcup = countryListTemplate(country);
+        
+        refs.marcupContainer.innerHTML = marcup;
+    };
+    if (country.length === 1 ) { 
+    const marcup = countryTemplate(country[0]);
+        refs.marcupContainer.innerHTML = marcup;
+  }
+};
+
+function onFetchError(country) {
+    
+      if (country.length > 10 || country.status === 404 || country.error === SyntaxError ) {
+        alert({
+            text: `Too many matches found. Please enter a more specific querty!`,
+           });
+  };
+  
+    
+}
